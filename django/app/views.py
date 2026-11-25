@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 import requests
+from decimal import Decimal
 
 from .models import Contato, Servico, Categoria, Pedido
 from .forms import FormContato, FormServico
@@ -79,7 +80,9 @@ def comprar(request, id_servico):
 @login_required
 def meus_pedidos(request):
     pedidos = Pedido.objects.filter(usuario=request.user).select_related('servico')
-    total = pedidos.aggregate(total=Sum('preco'))['total'] or 0
+    # O SQLite soma decimais como float (ex.: 299.900000000000), então arredonda para centavos
+    total = pedidos.aggregate(total=Sum('preco'))['total'] or Decimal('0')
+    total = Decimal(total).quantize(Decimal('0.01'))
     return render(request, "meus-pedidos.html", {'pedidos': pedidos, 'total': total})
 
 

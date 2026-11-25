@@ -35,7 +35,7 @@
     {% if pedidos %}
         <div class="pedidos-total">
             <span>Total das compras</span>
-            <strong>R$ {{ total }}</strong>
+            <strong>R$ {{ total|floatformat:2 }}</strong>
         </div>
     {% endif %}
 {% endblock %}
