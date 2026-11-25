@@ -1,6 +1,6 @@
 {% extends 'template.html' %}
 
-{% block titulo %}Relatórios | Django{% endblock %}
+{% block titulo %}Relatórios | RyxOfToys{% endblock %}
 
 {% block conteudo %}
     <section class="page-header">
@@ -69,7 +69,7 @@
                 datasets: [{
                     label: 'Serviços por categoria',
                     data: quantidades,
-                    backgroundColor: '#0C4B33'
+                    backgroundColor: ['#E8412C', '#1F6FD6', '#2FA84F', '#FFC629', '#FF8A1F'], borderColor: '#1E2235', borderWidth: 2, borderRadius: 6
                 }]
             },
             options: {
@@ -85,7 +85,7 @@
                 labels: ['Ativos', 'Inativos'],
                 datasets: [{
                     data: [{{ servicos_ativos }}, {{ servicos_inativos }}],
-                    backgroundColor: ['#0C4B33', '#D1A45B']
+                    backgroundColor: ['#2FA84F', '#E8412C'], borderColor: '#1E2235', borderWidth: 3
                 }]
             },
             options: {

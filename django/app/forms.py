@@ -7,6 +7,10 @@ class FormServico(forms.ModelForm):
     class Meta:
         model = Servico
         fields = ("nome","descricao", "preco", "categoria", "imagem", "ativo")
+        labels = {
+            "descricao": "Descrição",
+            "preco": "Preço",
+        }
 
 
 class FormContato(forms.ModelForm):

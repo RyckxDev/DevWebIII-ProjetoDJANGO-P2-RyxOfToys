@@ -1,9 +1,67 @@
 {% extends 'template.html' %}
 
-{% block titulo %} Home | Django {% endblock %}
+{% block titulo %}RyxOfToys | Brinquedos para montar e criar{% endblock %}
 
-{% block conteudo %} 
-    <p>
-        Django é um framework web de alto nível escrito em Python, criado para facilitar o desenvolvimento rápido, seguro e limpo de aplicações na internet.
-    </p>
+{% block conteudo %}
+    <section class="hero">
+        <div class="hero-texto">
+            <span class="page-header-tag">Loja de brinquedos</span>
+            <h1>Monte sua diversão!</h1>
+            <p>
+                Blocos de montar, jogos, bonecos e muito mais para crianças de todas as idades
+                (e para os adultos que nunca pararam de brincar).
+            </p>
+            <a class="btn" href="{% url 'produtos' %}">Ver brinquedos</a>
+        </div>
+        <div class="hero-blocos" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+        </div>
+    </section>
+
+    <section class="secao">
+        <h2>Quem é a RyxOfToys?</h2>
+        <p>
+            Somos uma loja de brinquedos que acredita que brincar é a melhor forma de aprender.
+            Selecionamos brinquedos que estimulam a criatividade, o raciocínio e a imaginação,
+            peça por peça.
+        </p>
+    </section>
+
+    <section class="secao">
+        <h2>Por que comprar com a gente?</h2>
+        <p>Cada brinquedo passa pela nossa curadoria antes de chegar até você.</p>
+
+        <div class="vantagens">
+            <article class="vantagem">
+                <span class="vantagem-icone" aria-hidden="true">&#128737;</span>
+                <h3>Segurança</h3>
+                <p>Brinquedos certificados e com indicação de idade, para brincar sem preocupação.</p>
+            </article>
+            <article class="vantagem">
+                <span class="vantagem-icone" aria-hidden="true">&#128666;</span>
+                <h3>Entrega rápida</h3>
+                <p>Seu pedido sai rapidinho para a diversão não precisar esperar.</p>
+            </article>
+            <article class="vantagem">
+                <span class="vantagem-icone" aria-hidden="true">&#129504;</span>
+                <h3>Educativos</h3>
+                <p>Brinquedos que desenvolvem criatividade, coordenação e raciocínio lógico.</p>
+            </article>
+            <article class="vantagem">
+                <span class="vantagem-icone" aria-hidden="true">&#127873;</span>
+                <h3>Para presentear</h3>
+                <p>Opções para todas as idades e bolsos, perfeitas para qualquer ocasião.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="cta">
+        <h2>Comece a montar!</h2>
+        <p>Crie sua conta, escolha seus brinquedos e acompanhe tudo em Meus Pedidos.</p>
+        {% if user.is_authenticated %}
+            <a class="btn" href="{% url 'produtos' %}">Ir para os produtos</a>
+        {% else %}
+            <a class="btn" href="{% url 'cadastro' %}">Criar minha conta</a>
+        {% endif %}
+    </section>
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'template.html' %}
 
-{% block titulo %}Dashboard | Django{% endblock %}
+{% block titulo %}Dashboard | RyxOfToys{% endblock %}
 
 {% block conteudo %}
     <section class="dashboard-boas-vindas">
@@ -35,7 +35,7 @@
             <a class="dashboard-card" href="{% url 'servicos' %}">
                 <span class="dashboard-card-tag">Gerenciamento</span>
                 <h4>Serviços</h4>
-                <p>Cadastre, consulte e gerencie os serviços disponíveis no sistema.</p>
+                <p>Cadastre, consulte e gerencie os brinquedos e serviços da vitrine.</p>
                 <span class="dashboard-card-link">Gerenciar serviços &rarr;</span>
             </a>
             {% endif %}
@@ -52,7 +52,7 @@
             <a class="dashboard-card" href="{% url 'meus_pedidos' %}">
                 <span class="dashboard-card-tag">Minhas compras</span>
                 <h4>Meus Pedidos</h4>
-                <p>Consulte seus serviços adquiridos, acompanhe suas compras e visualize os valores.</p>
+                <p>Consulte os brinquedos que você comprou e acompanhe os valores.</p>
                 <span class="dashboard-card-link">Visualizar pedidos &rarr;</span>
             </a>
 

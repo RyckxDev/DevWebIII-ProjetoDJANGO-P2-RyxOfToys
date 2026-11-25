@@ -1,13 +1,13 @@
 {% extends 'template.html' %}
 
-{% block titulo %}Serviços | Django{% endblock %}
+{% block titulo %}Serviços | RyxOfToys{% endblock %}
 
 {% block conteudo %}
     <section class="page-header page-header-acoes">
         <div>
             <span class="page-header-tag">Painel administrativo</span>
             <h2>Gerenciamento de Serviços</h2>
-            <p>Gerencie, consulte e acompanhe seus serviços.</p>
+            <p>Gerencie os brinquedos e serviços da vitrine da loja.</p>
         </div>
         {% if perms.app.add_servico %}
             <a class="btn" href="{% url 'addServicos' %}">+ Novo Serviço</a>
@@ -22,11 +22,11 @@
         </div>
         <div class="stat-card">
             <small>Menor preço</small>
-            <strong>{% if menor_preco is not None %}R$ {{ menor_preco }}{% else %}-{% endif %}</strong>
+            <strong>{% if menor_preco is not None %}R$ {{ menor_preco|floatformat:2 }}{% else %}-{% endif %}</strong>
         </div>
         <div class="stat-card">
             <small>Maior preço</small>
-            <strong>{% if maior_preco is not None %}R$ {{ maior_preco }}{% else %}-{% endif %}</strong>
+            <strong>{% if maior_preco is not None %}R$ {{ maior_preco|floatformat:2 }}{% else %}-{% endif %}</strong>
         </div>
         <div class="stat-card">
             <small>Situação</small>
@@ -97,7 +97,7 @@
                     <td>{{ servico.nome }}</td>
                     <td>{{ servico.descricao }}</td>
                     <td>{{ servico.categoria.nome|default:"-" }}</td>
-                    <td>R$ {{ servico.preco }}</td>
+                    <td class="sem-quebra">R$ {{ servico.preco }}</td>
                     <td>{% if servico.ativo %}Ativo{% else %}Inativo{% endif %}</td>
                     <td class="tabela-acoes">
                         {% if perms.app.change_servico %}

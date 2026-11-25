@@ -1,11 +1,11 @@
 {% extends 'template.html' %}
 
-{% block titulo %}Meus Pedidos | Django{% endblock %}
+{% block titulo %}Meus Pedidos | RyxOfToys{% endblock %}
 
 {% block conteudo %}
     <section class="page-header">
         <h2>Meus Pedidos</h2>
-        <p>Acompanhe todos os serviços que você adquiriu.</p>
+        <p>Acompanhe todos os brinquedos que você comprou.</p>
         <a class="btn" href="{% url 'produtos' %}">Continuar comprando</a>
     </section>
 
@@ -28,7 +28,7 @@
                 </div>
             </article>
         {% empty %}
-            <p>Você ainda não fez nenhum pedido.</p>
+            <p class="pedidos-vazio">Você ainda não fez nenhum pedido. Que tal escolher um brinquedo?</p>
         {% endfor %}
     </section>
 

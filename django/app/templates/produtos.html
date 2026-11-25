@@ -1,46 +1,70 @@
 {% extends 'template.html' %}
 
-{% block titulo %}Produtos | Django{% endblock %}
+{% block titulo %}Produtos | RyxOfToys{% endblock %}
 
 {% block conteudo %}
-    <h2>Nossos Produtos</h2>
+    <section class="page-header">
+        <span class="page-header-tag">Nossa vitrine</span>
+        <h2>Produtos</h2>
+        <p>Confira nossos brinquedos e descubra também as ofertas das lojas parceiras.</p>
+    </section>
+
+    {# Produtos do banco local: têm botão Comprar #}
+    <div class="secao-titulo">
+        <h3>Brinquedos da Nossa Loja</h3>
+        <p>Produtos cadastrados exclusivamente na RyxOfToys.</p>
+    </div>
+
     <div class="service-cards">
         {% for servico in servicos %}
             <article class="service-card">
-                {% if servico.imagem %}
-                    <img src="{{ servico.imagem.url }}" alt="{{ servico.nome }}">
-                {% endif %}
-                <h3>{{ servico.nome }}</h3>
-                <p>{{ servico.descricao }}</p>
-                <strong>R$ {{ servico.preco }}</strong>
-                {% if user.is_authenticated %}
-                    <form class="form-comprar" method="post" action="{% url 'comprar' servico.id %}">
-                        {% csrf_token %}
-                        <button class="btn-comprar" type="submit">Comprar</button>
-                    </form>
-                {% else %}
-                    {# compra só para usuários logados: manda para o login e volta para Produtos #}
-                    <a class="btn-comprar" href="{% url 'login' %}?next={% url 'produtos' %}">Comprar</a>
-                {% endif %}
+                <div class="service-card-imagem">
+                    {% if servico.imagem %}
+                        <img src="{{ servico.imagem.url }}" alt="{{ servico.nome }}">
+                    {% else %}
+                        <span class="service-card-imagem-vazia" aria-hidden="true">&#129528;</span>
+                    {% endif %}
+                </div>
+                <div class="service-card-corpo">
+                    <h4>{{ servico.nome }}</h4>
+                    <p>{{ servico.descricao }}</p>
+                    <span class="preco">R$ {{ servico.preco }}</span>
+                    {% if user.is_authenticated %}
+                        <form class="form-comprar" method="post" action="{% url 'comprar' servico.id %}">
+                            {% csrf_token %}
+                            <button class="btn-comprar" type="submit">Comprar</button>
+                        </form>
+                    {% else %}
+                        {# compra só para usuários logados: manda para o login e volta para Produtos #}
+                        <a class="btn-comprar" href="{% url 'login' %}?next={% url 'produtos' %}">Comprar</a>
+                    {% endif %}
+                </div>
             </article>
         {% empty %}
-            <p>Nenhum produto cadastrado.</p>
+            <p>Nenhum brinquedo cadastrado.</p>
         {% endfor %}
     </div>
-    
-    <h2>Produtos da API</h2>
+
+    {# Produtos da API externa: apenas exibição #}
+    <div class="secao-titulo">
+        <h3>Produtos das Lojas Parceiras</h3>
+        <p>Confira também produtos disponíveis em nossa rede parceira.</p>
+    </div>
 
     <div class="service-cards">
         {% for prod in produtos_api %}
             <article class="service-card">
-                <hr>
-                <img src="{{ prod.image }}" alt="{{ prod.title }}" width="50px">
-                <h3>{{ prod.title }}</h3>
-                <p>{{ prod.description }}</p>
-                <p>R$ {{ prod.price }}</p>
+                <div class="service-card-imagem">
+                    <img src="{{ prod.image }}" alt="{{ prod.title }}">
+                </div>
+                <div class="service-card-corpo">
+                    <h4>{{ prod.title }}</h4>
+                    <p>{{ prod.description }}</p>
+                    <span class="preco">R$ {{ prod.price }}</span>
+                </div>
             </article>
         {% empty %}
-            <p>Nenhum produto cadastrado.</p>
+            <p>Não foi possível carregar os produtos parceiros agora.</p>
         {% endfor %}
     </div>
 {% endblock %}
