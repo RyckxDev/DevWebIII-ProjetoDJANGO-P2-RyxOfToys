@@ -11,7 +11,7 @@ Passo a passo para rodar o projeto em qualquer PC (em casa ou na faculdade).
 
 ```powershell
 git clone https://github.com/RyckxDev/DevWebIII-ProjetoDJANGO-P2-RyxOfToys.git
-cd DevWebIII-ProjetoP2\django
+cd DevWebIII-ProjetoDJANGO-P2-RyxOfToys\django
 ```
 
 Se o projeto veio por pendrive ou zip, basta entrar na pasta `django`.
@@ -122,7 +122,7 @@ e abra no navegador para criar a nova senha.
 ## Resumo rápido (PC novo)
 
 ```powershell
-cd DevWebIII-ProjetoP2\django
+cd DevWebIII-ProjetoDJANGO-P2-RyxOfToys\django
 python -m venv venv
 .\venv\Scripts\activate
 pip install -r requirements.txt
@@ -135,7 +135,7 @@ python manage.py runserver
 ## Resumo rápido (PC onde já rodou antes)
 
 ```powershell
-cd DevWebIII-ProjetoP2\django
+cd DevWebIII-ProjetoDJANGO-P2-RyxOfToys\django
 .\venv\Scripts\activate
 python manage.py runserver
 ```
