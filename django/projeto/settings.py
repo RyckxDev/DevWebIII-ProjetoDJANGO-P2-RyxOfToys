@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+import dj_database_url
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -22,12 +25,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_0#0pm4eku6^0v19!w)v87y4tn3aot!esvy^&uqeaps40%5=b1'
+# Em produção (Render) a chave vem da variável de ambiente SECRET_KEY.
+# A chave abaixo é só para desenvolvimento local.
+SECRET_KEY = os.getenv(
+    'SECRET_KEY',
+    'django-insecure-_0#0pm4eku6^0v19!w)v87y4tn3aot!esvy^&uqeaps40%5=b1',
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Local: DEBUG ligado. No Render: variável DEBUG=False.
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = []
+
+# O Render informa o endereço do site nesta variável (ex.: ryxoftoys.onrender.com)
+RENDER_EXTERNAL_HOSTNAME = os.getenv('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+    CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
 
 
 # Application definition
@@ -47,6 +63,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # WhiteNoise serve os arquivos estáticos (CSS) em produção
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -78,11 +96,13 @@ WSGI_APPLICATION = 'projeto.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
+# Local: SQLite (db.sqlite3).
+# Render: PostgreSQL do Supabase, informado na variável de ambiente DATABASE_URL.
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+    )
 }
 
 
@@ -122,6 +142,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'   # destino do collectstatic (usado em produção)
+
+STORAGES = {
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    },
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage',
+    },
+}
 
 #diretorio de upload de arquivos
 MEDIA_URL = '/media/'
@@ -141,3 +171,8 @@ MAILERS = {
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/login/dashboard/"
 LOGOUT_REDIRECT_URL = "/login/"
+# Segurança em produção (o Render atende por HTTPS e repassa a requisição ao Django)
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True

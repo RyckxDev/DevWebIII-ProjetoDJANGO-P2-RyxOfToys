@@ -1,0 +1,2 @@
+# scripts shell sempre com fim de linha LF (o Render roda em Linux)
+*.sh text eol=lf
