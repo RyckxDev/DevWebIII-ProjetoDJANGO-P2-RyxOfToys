@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -36,3 +37,19 @@ class Contato(models.Model):
 
     def __str__(self):
         return self.nome
+
+
+class Pedido(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='pedidos')
+    # SET_NULL: se o serviço for excluído, o pedido continua no histórico do cliente
+    servico = models.ForeignKey(Servico, on_delete=models.SET_NULL, null=True, blank=True, related_name='pedidos')
+    # nome e preço copiados no momento da compra (o serviço pode mudar depois)
+    nome_servico = models.CharField(max_length=150)
+    preco = models.DecimalField(max_digits=10, decimal_places=2)
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-criado_em']
+
+    def __str__(self):
+        return f'{self.usuario.username} - {self.nome_servico}'

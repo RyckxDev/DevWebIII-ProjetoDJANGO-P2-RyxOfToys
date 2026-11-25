@@ -1,0 +1,41 @@
+{% extends 'template.html' %}
+
+{% block titulo %}Meus Pedidos | Django{% endblock %}
+
+{% block conteudo %}
+    <section class="page-header">
+        <h2>Meus Pedidos</h2>
+        <p>Acompanhe todos os serviços que você adquiriu.</p>
+        <a class="btn" href="{% url 'produtos' %}">Continuar comprando</a>
+    </section>
+
+    <section class="pedidos">
+        {% for pedido in pedidos %}
+            <article class="pedido">
+                {% if pedido.servico.imagem %}
+                    <img class="pedido-imagem" src="{{ pedido.servico.imagem.url }}" alt="{{ pedido.nome_servico }}">
+                {% endif %}
+                <div class="pedido-info">
+                    <h3>{{ pedido.nome_servico }}</h3>
+                    {% if pedido.servico %}
+                        <p>{{ pedido.servico.descricao }}</p>
+                    {% endif %}
+                    <small>Comprado em: {{ pedido.criado_em|date:"d/m/Y H:i" }}</small>
+                </div>
+                <div class="pedido-valor">
+                    <small>Valor</small>
+                    <strong>R$ {{ pedido.preco }}</strong>
+                </div>
+            </article>
+        {% empty %}
+            <p>Você ainda não fez nenhum pedido.</p>
+        {% endfor %}
+    </section>
+
+    {% if pedidos %}
+        <div class="pedidos-total">
+            <span>Total das compras</span>
+            <strong>R$ {{ total }}</strong>
+        </div>
+    {% endif %}
+{% endblock %}

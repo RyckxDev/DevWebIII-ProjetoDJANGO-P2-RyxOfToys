@@ -13,6 +13,15 @@
                 <h3>{{ servico.nome }}</h3>
                 <p>{{ servico.descricao }}</p>
                 <strong>R$ {{ servico.preco }}</strong>
+                {% if user.is_authenticated %}
+                    <form class="form-comprar" method="post" action="{% url 'comprar' servico.id %}">
+                        {% csrf_token %}
+                        <button class="btn-comprar" type="submit">Comprar</button>
+                    </form>
+                {% else %}
+                    {# compra só para usuários logados: manda para o login e volta para Produtos #}
+                    <a class="btn-comprar" href="{% url 'login' %}?next={% url 'produtos' %}">Comprar</a>
+                {% endif %}
             </article>
         {% empty %}
             <p>Nenhum produto cadastrado.</p>

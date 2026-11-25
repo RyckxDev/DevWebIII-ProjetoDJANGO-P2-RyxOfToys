@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Categoria, Servico
+from .models import Categoria, Servico, Pedido
 
 # Register your models here.
 admin.site.register(Categoria)
@@ -13,3 +13,10 @@ class ServicoAdmin(admin.ModelAdmin):
     search_fields = ["nome", "descricao"]
     ordering = ["nome", "preco"]
     list_per_page = 25
+
+
+@admin.register(Pedido)
+class PedidoAdmin(admin.ModelAdmin):
+    list_display = ["usuario", "nome_servico", "preco", "criado_em"]
+    list_filter = ["criado_em"]
+    search_fields = ["usuario__username", "nome_servico"]

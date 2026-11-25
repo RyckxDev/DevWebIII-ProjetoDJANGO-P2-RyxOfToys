@@ -1,5 +1,8 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import Contato, Servico, Categoria
+from .models import Contato, Servico, Categoria, Pedido
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from .forms import FormContato, FormServico
 from .supabase_client import supabase
 from .serializers import CategoriaSerializer
@@ -153,6 +156,27 @@ def produtos(request):
 
     
     return render(request, "produtos.html", {'servicos': produtos, 'produtos_api': produtos_api})
+
+@login_required
+@require_POST
+def comprar(request, id_servico):
+    servico = get_object_or_404(Servico, id=id_servico, ativo=True)
+    Pedido.objects.create(
+        usuario=request.user,
+        servico=servico,
+        nome_servico=servico.nome,
+        preco=servico.preco,
+    )
+    messages.success(request, f'"{servico.nome}" foi adicionado aos seus pedidos.')
+    return redirect('meus_pedidos')
+
+
+@login_required
+def meus_pedidos(request):
+    pedidos = Pedido.objects.filter(usuario=request.user).select_related('servico')
+    total = pedidos.aggregate(total=Sum('preco'))['total'] or 0
+    return render(request, "meus-pedidos.html", {'pedidos': pedidos, 'total': total})
+
 
 def addServicos(request):
     form = FormServico(request.POST or None, request.FILES or None)
