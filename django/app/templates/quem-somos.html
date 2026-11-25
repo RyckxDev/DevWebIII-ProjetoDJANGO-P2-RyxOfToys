@@ -1,0 +1,36 @@
+{% extends 'template.html' %}
+
+{% block titulo %}Quem Somos | Django{% endblock %}
+
+{% block conteudo %}
+    <section class="page-header">
+        <h2>Quem Somos</h2>
+        <p>
+            Conheça nossa equipe! Somos pessoas dedicadas, trabalhando juntas para
+            desenvolver soluções e compartilhar conhecimento.
+        </p>
+    </section>
+
+    {% if erro %}
+        <p class="erro">{{ erro }}</p>
+    {% endif %}
+
+    <section class="team-cards">
+        {% for integrante in integrantes %}
+            <article class="team-card">
+                {% if integrante.foto_url %}
+                    <img class="team-card-foto" src="{{ integrante.foto_url }}" alt="Foto de {{ integrante.nome }}">
+                {% endif %}
+                <div class="team-card-info">
+                    <h3>{{ integrante.nome }}</h3>
+                    <span class="team-card-cargo">{{ integrante.cargo }}</span>
+                    <p>{{ integrante.biografia }}</p>
+                </div>
+            </article>
+        {% empty %}
+            {% if not erro %}
+                <p>Nenhum integrante cadastrado.</p>
+            {% endif %}
+        {% endfor %}
+    </section>
+{% endblock %}

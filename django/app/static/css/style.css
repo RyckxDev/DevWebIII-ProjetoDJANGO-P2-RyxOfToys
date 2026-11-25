@@ -129,3 +129,48 @@ th{
     background: #f44336;
     border-radius: 4px;
 }
+
+/* ---- Menu e Quem Somos: estilo mínimo, será refeito na estilização ---- */
+.nav{
+    display: flex;
+    align-items: center;
+}
+.nav-logout{
+    display: inline;
+}
+.nav-logout button{
+    background: none;
+    border: none;
+    color: white;
+    font: inherit;
+    padding: 10px;
+    cursor: pointer;
+}
+.nav-logout button:hover{
+    color: green;
+}
+.team-cards{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 260px));
+    justify-content: center;
+    gap: 24px;
+}
+.team-card{
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.team-card-foto{
+    display: block;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+.team-card-info{
+    padding: 14px;
+    text-align: center;
+}
+.erro{
+    color: #b00020;
+    text-align: center;
+}

@@ -32,15 +32,22 @@ def relatorios(request):
     })
 
 
-def integrantes(request):
-
+def buscar_integrantes():
+    """Consulta os integrantes no Supabase. Retorna (lista, mensagem_de_erro)."""
     try:
-        integrantes = supabase.table("integrantes").select("*").execute().data
-        erro = None
+        resposta = supabase.table("integrantes").select("*").order("id").execute()
+        return resposta.data, None
     except Exception as e:
-        integrantes = []
-        erro = f"Não foi possível consultar os integrantes no Supabase: {e}"
+        return [], f"Não foi possível consultar os integrantes no Supabase: {e}"
 
+
+def quem_somos(request):
+    integrantes, erro = buscar_integrantes()
+    return render(request, "quem-somos.html", {'integrantes': integrantes, 'erro': erro})
+
+
+def integrantes(request):
+    integrantes, erro = buscar_integrantes()
     return render(request, "integrantes.html", {'integrantes': integrantes, 'erro': erro})
 
 def addIntegrante(request):
