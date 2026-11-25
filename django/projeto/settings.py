@@ -176,3 +176,11 @@ if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+
+# Mostra avisos e erros do app no console (aparecem nos Logs do Render)
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {'console': {'class': 'logging.StreamHandler'}},
+    'loggers': {'app': {'handlers': ['console'], 'level': 'WARNING'}},
+}

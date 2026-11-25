@@ -7,6 +7,7 @@ from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
+import logging
 import requests
 from decimal import Decimal
 
@@ -14,6 +15,8 @@ from .models import Contato, Servico, Categoria, Pedido
 from .forms import FormContato, FormServico
 from .supabase_client import supabase
 from .serializers import CategoriaSerializer
+
+logger = logging.getLogger(__name__)
 
 
 # Atalho: exige login e, se a pessoa estiver logada mas sem a permissão, devolve 403
@@ -36,17 +39,47 @@ def quem_somos(request):
     return render(request, "quem-somos.html", {'integrantes': integrantes, 'erro': erro})
 
 
+HEADERS_API = {
+    # alguns serviços atrás do Cloudflare recusam o user-agent padrão "python-requests"
+    'User-Agent': 'Mozilla/5.0 (compatible; RyxOfToys/1.0; projeto academico Django)',
+    'Accept': 'application/json',
+}
+
+
+def buscar_produtos_parceiros():
+    """Busca os produtos das lojas parceiras (API externa).
+
+    Tenta a Fake Store API; se ela falhar (ex.: bloqueio do Cloudflare a servidores
+    na nuvem, como o Render), usa a DummyJSON. Os dois formatos são convertidos
+    para os mesmos campos usados no template: title, description, price, image.
+    """
+    try:
+        resposta = requests.get('https://fakestoreapi.com/products', headers=HEADERS_API, timeout=10)
+        resposta.raise_for_status()
+        return resposta.json()
+    except (requests.RequestException, ValueError) as e:
+        logger.warning("Fake Store API indisponível (%s). Usando DummyJSON.", e)
+
+    try:
+        resposta = requests.get('https://dummyjson.com/products/category/sports-accessories', headers=HEADERS_API, timeout=10)
+        resposta.raise_for_status()
+        return [
+            {
+                'title': p.get('title'),
+                'description': p.get('description'),
+                'price': p.get('price'),
+                'image': p.get('thumbnail'),
+            }
+            for p in resposta.json().get('products', [])
+        ]
+    except (requests.RequestException, ValueError) as e:
+        logger.error("DummyJSON também indisponível (%s).", e)
+        return []
+
+
 def produtos(request):
     produtos = Servico.objects.filter(ativo=True).order_by('nome')
-
-    # Requisição da API externa (se ela cair, a página continua abrindo)
-    try:
-        resposta = requests.get('https://fakestoreapi.com/products', timeout=10)
-        resposta.raise_for_status()
-        produtos_api = resposta.json()
-    except (requests.RequestException, ValueError):
-        produtos_api = []
-
+    produtos_api = buscar_produtos_parceiros()
     return render(request, "produtos.html", {'servicos': produtos, 'produtos_api': produtos_api})
 
 
