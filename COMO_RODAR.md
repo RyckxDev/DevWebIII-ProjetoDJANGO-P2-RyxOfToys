@@ -94,6 +94,29 @@ Acesse no navegador: **http://127.0.0.1:8000/**
 
 Para parar o servidor, use `Ctrl + C`.
 
+## 8. Tipos de usuário e permissões
+
+| Usuário | Ao fazer login | O que vê |
+|---|---|---|
+| **Admin** (criado com `createsuperuser`) | Vai direto para o `/admin/` | Tudo |
+| **Cliente** (criado em "Cadastre-se") | Vai para a Dashboard | Editar Perfil e Meus Pedidos |
+| **Cliente no grupo "Gerência"** | Vai para a Dashboard | Os 6 cards: Editar Perfil, Contatos, Serviços, Equipe, Meus Pedidos e Relatórios |
+
+Para liberar as áreas de gerenciamento a um cliente:
+1. Entre no `/admin/` com o admin.
+2. Vá em **Usuários**, abra o cliente e, em **Grupos**, adicione **Gerência**.
+3. Salve.
+
+O grupo "Gerência" é criado automaticamente pelo `migrate`.
+
+## 9. Esqueceu a senha
+
+O projeto não envia e-mails de verdade. **O e-mail de recuperação aparece no terminal onde
+o `runserver` está rodando.** Copie o link que começa com `http://127.0.0.1:8000/login/senha/redefinir/...`
+e abra no navegador para criar a nova senha.
+
+> Só funciona para usuários que tenham e-mail cadastrado.
+
 ---
 
 ## Resumo rápido (PC novo)

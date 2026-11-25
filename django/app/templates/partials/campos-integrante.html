@@ -1,0 +1,18 @@
+{# Campos usados tanto no cadastro quanto na edição de integrante #}
+<p>
+    <label for="nome">Nome completo</label>
+    <input type="text" name="nome" id="nome" value="{{ integrante.nome|default:'' }}" placeholder="Digite o nome do integrante" required>
+</p>
+<p>
+    <label for="cargo">Cargo</label>
+    <input type="text" name="cargo" id="cargo" value="{{ integrante.cargo|default:'' }}" placeholder="Ex.: Desenvolvedor Web" required>
+</p>
+<p>
+    <label for="biografia">Biografia</label>
+    <textarea name="biografia" id="biografia" rows="4" placeholder="Conte um pouco sobre o integrante..." required>{{ integrante.biografia|default:'' }}</textarea>
+</p>
+<p>
+    <label for="foto">Foto (URL)</label>
+    <input type="url" name="foto" id="foto" value="{{ integrante.foto_url|default:'' }}" placeholder="https://exemplo.com/foto.jpg">
+    <small>Informe o endereço de uma imagem pública.</small>
+</p>

@@ -1,0 +1,31 @@
+{% extends 'template.html' %}
+
+{% block titulo %}Editar Integrante | Django{% endblock %}
+
+{% block conteudo %}
+    <section class="page-header">
+        <span class="page-header-tag">Nossa equipe</span>
+        <h2>Editar Integrante</h2>
+        <p>Atualize as informações do integrante selecionado em nossa equipe.</p>
+    </section>
+
+    <section class="form-card">
+        <h3>Informações do integrante</h3>
+        <p>Altere os campos necessários abaixo.</p>
+
+        <form method="POST" action="{% url 'editIntegrante' integrante.id %}">
+            {% csrf_token %}
+            {% include "partials/campos-integrante.html" %}
+
+            {% if integrante.foto_url %}
+                <p>
+                    <small>Foto atual</small>
+                    <img class="form-foto-preview" src="{{ integrante.foto_url }}" alt="Foto de {{ integrante.nome }}">
+                </p>
+            {% endif %}
+
+            <button class="btn" type="submit">Salvar Alterações</button>
+            <a class="btn-secundario" href="{% url 'integrantes' %}">Cancelar</a>
+        </form>
+    </section>
+{% endblock %}

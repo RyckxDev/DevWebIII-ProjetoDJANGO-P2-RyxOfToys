@@ -1,24 +1,23 @@
-{% extends "template.html" %}
+{% extends 'template.html' %}
 
-{% block titulo %}Home{%endblock%}
+{% block titulo %}Novo Integrante | Django{% endblock %}
 
-{%block conteudo%}
-<h2> Novo Integrante</h2>
-<form method="POST" action="{% url 'addIntegrante'%}">
-    {% csrf_token %}
+{% block conteudo %}
+    <section class="page-header">
+        <span class="page-header-tag">Nossa equipe</span>
+        <h2>Novo Integrante</h2>
+        <p>Cadastre um novo integrante e apresente sua função e contribuição para nossa equipe.</p>
+    </section>
 
-    <label for="nome">Nome:</label>
-    <input type="text" name="nome" id="nome" required><br>
+    <section class="form-card">
+        <h3>Informações do integrante</h3>
+        <p>Preencha os dados abaixo para realizar o cadastro.</p>
 
-    <label for="cargo">Descrição do cargo:</label>
-    <input type="text" name="cargo" id="cargo" required><br>
-
-    <label for="biografia">Biografia:</label>
-    <textarea name="biografia" id="biografia" required></textarea><br>
-
-    <label for="foto">Foto (URL):</label>
-    <input type="url" name="foto" id="foto"> <br>
-
-    <button type="submit">Cadastrar</button >
-</form>
+        <form method="POST" action="{% url 'addIntegrante' %}">
+            {% csrf_token %}
+            {% include "partials/campos-integrante.html" %}
+            <button class="btn" type="submit">Cadastrar Integrante</button>
+            <a class="btn-secundario" href="{% url 'integrantes' %}">Cancelar</a>
+        </form>
+    </section>
 {% endblock %}

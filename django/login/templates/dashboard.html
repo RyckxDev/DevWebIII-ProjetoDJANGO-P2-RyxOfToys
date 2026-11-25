@@ -1,17 +1,69 @@
 {% extends 'template.html' %}
 
-{% block titulo %} Dashboard {% endblock %}
+{% block titulo %}Dashboard | Django{% endblock %}
 
 {% block conteudo %}
-    <h2>Dashboard</h2>
+    <section class="dashboard-boas-vindas">
+        <span class="page-header-tag">Painel do usuário</span>
+        <h2>Olá, {{ user.first_name|default:user.username }}!</h2>
+        <p>Bem-vindo ao seu painel de controle. Escolha uma das opções abaixo para continuar.</p>
+    </section>
 
-    <p>Olá, <strong>{{ user.username }}</strong>!</p>
+    <section class="dashboard">
+        <h3>Meu espaço</h3>
+        <p>Gerencie suas informações, acompanhe seus pedidos e acesse as funcionalidades disponíveis na plataforma.</p>
 
-    <p><a href="{% url 'perfil' %}">Meu Perfil</a></p>
+        {# Os cards aparecem conforme as permissões do usuário (grupo "Gerência" no /admin/) #}
+        <div class="dashboard-cards">
+            <a class="dashboard-card" href="{% url 'perfil' %}">
+                <span class="dashboard-card-tag">Minha conta</span>
+                <h4>Editar Perfil</h4>
+                <p>Consulte e atualize seus dados pessoais, informações e preferências.</p>
+                <span class="dashboard-card-link">Acessar perfil &rarr;</span>
+            </a>
 
-    <form method="post" action="{% url 'logout' %}">
-        {% csrf_token %}
-        <input type="submit" value="Sair">
-    </form>
+            {% if perms.app.view_contato %}
+            <a class="dashboard-card" href="{% url 'contatos' %}">
+                <span class="dashboard-card-tag">Comunicação</span>
+                <h4>Contatos</h4>
+                <p>Consulte e gerencie os contatos cadastrados na plataforma.</p>
+                <span class="dashboard-card-link">Gerenciar contatos &rarr;</span>
+            </a>
+            {% endif %}
 
+            {% if perms.app.view_servico %}
+            <a class="dashboard-card" href="{% url 'servicos' %}">
+                <span class="dashboard-card-tag">Gerenciamento</span>
+                <h4>Serviços</h4>
+                <p>Cadastre, consulte e gerencie os serviços disponíveis no sistema.</p>
+                <span class="dashboard-card-link">Gerenciar serviços &rarr;</span>
+            </a>
+            {% endif %}
+
+            {% if perms.app.gerenciar_equipe %}
+            <a class="dashboard-card" href="{% url 'integrantes' %}">
+                <span class="dashboard-card-tag">Nossa equipe</span>
+                <h4>Equipe</h4>
+                <p>Gerencie os integrantes, cargos, biografias e informações da equipe.</p>
+                <span class="dashboard-card-link">Gerenciar equipe &rarr;</span>
+            </a>
+            {% endif %}
+
+            <a class="dashboard-card" href="{% url 'meus_pedidos' %}">
+                <span class="dashboard-card-tag">Minhas compras</span>
+                <h4>Meus Pedidos</h4>
+                <p>Consulte seus serviços adquiridos, acompanhe suas compras e visualize os valores.</p>
+                <span class="dashboard-card-link">Visualizar pedidos &rarr;</span>
+            </a>
+
+            {% if perms.app.ver_relatorios %}
+            <a class="dashboard-card" href="{% url 'relatorios' %}">
+                <span class="dashboard-card-tag">Análises</span>
+                <h4>Relatórios</h4>
+                <p>Consulte informações, dados e estatísticas sobre os serviços da plataforma.</p>
+                <span class="dashboard-card-link">Acessar relatórios &rarr;</span>
+            </a>
+            {% endif %}
+        </div>
+    </section>
 {% endblock %}

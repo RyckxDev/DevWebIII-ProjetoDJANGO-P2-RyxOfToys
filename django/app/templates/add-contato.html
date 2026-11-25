@@ -1,12 +1,24 @@
 {% extends 'template.html' %}
 
-{% block titulo %}Novo Contato | Django{% endblock %}
+{% block titulo %}Contato | Django{% endblock %}
 
 {% block conteudo %}
-    <h2>Novo Contato</h2>
-    <form method="post" class="contact-form">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Enviar</button>
-    </form>
+    <section class="page-header">
+        <span class="page-header-tag">Fale conosco</span>
+        <h2>Entre em contato</h2>
+        <p>Tem alguma dúvida, sugestão ou deseja saber mais? Envie sua mensagem. Será um prazer conversar com você!</p>
+    </section>
+
+    <section class="form-card">
+        <h3>Envie sua mensagem</h3>
+        <p>Preencha os campos abaixo para entrar em contato.</p>
+
+        <form method="post" class="contact-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn" type="submit">Enviar mensagem</button>
+        </form>
+    </section>
+
+    <p class="link-voltar">Obrigado por entrar em contato conosco!</p>
 {% endblock %}

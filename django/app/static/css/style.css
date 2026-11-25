@@ -231,3 +231,68 @@ th{
 .page-header .btn{
     color: #0c4b33;
 }
+
+/* ---- Área restrita: estilo mínimo, será refeito na estilização ---- */
+.stat-cards,
+.dashboard-cards,
+.graficos-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    max-width: 900px;
+    margin: 0 auto 20px;
+}
+.stat-card,
+.dashboard-card,
+.grafico-card{
+    display: block;
+    background: white;
+    border-radius: 8px;
+    padding: 14px;
+    color: #292929;
+}
+.stat-card strong{
+    display: block;
+    font-size: 1.3em;
+}
+.grafico-area{
+    position: relative;
+    height: 260px;
+}
+.tabela-imagem,
+.tabela-foto{
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+}
+.form-foto-preview{
+    display: block;
+    max-width: 240px;
+    margin-top: 6px;
+}
+.tabela-acoes form{
+    display: inline;
+}
+.page-header-acoes{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 900px;
+    margin: 0 auto 16px;
+}
+.form-card,
+.filtros,
+.tabela-card{
+    max-width: 900px;
+    margin: 0 auto 20px;
+}
+.page-header a,
+.link-voltar a,
+.form-card a,
+.filtros a,
+.tabela-card a{
+    color: #0c4b33;
+}
+.filtro-ativo{
+    font-weight: bold;
+}

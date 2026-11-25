@@ -21,7 +21,14 @@ class Servico(models.Model):
     criado_em = models.DateTimeField(auto_now_add=True)
     atualizado_em = models.DateTimeField(auto_now=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT, related_name='servicos', null = True, blank = True)
-    
+
+    class Meta:
+        # permissões extras usadas na Dashboard (Equipe fica no Supabase e não tem model próprio)
+        permissions = [
+            ("gerenciar_equipe", "Pode gerenciar a equipe (Supabase)"),
+            ("ver_relatorios", "Pode ver os relatórios"),
+        ]
+
     def __str__(self):
         return self.nome
 

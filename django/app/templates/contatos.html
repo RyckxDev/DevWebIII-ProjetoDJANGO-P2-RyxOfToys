@@ -3,8 +3,22 @@
 {% block titulo %}Contatos | Django{% endblock %}
 
 {% block conteudo %}
-    <h2>Nossos Contatos</h2>
-    <div class="table-wrapper">
+    <section class="page-header page-header-acoes">
+        <div>
+            <span class="page-header-tag">Gerenciamento</span>
+            <h2>Nossos Contatos</h2>
+            <p>Consulte e gerencie as mensagens recebidas através do formulário de contato.</p>
+        </div>
+        <div class="stat-card">
+            <small>Total de contatos</small>
+            <strong>{{ contatos|length }}</strong>
+        </div>
+    </section>
+
+    <section class="tabela-card">
+        <h3>Lista de contatos</h3>
+        <p>Contatos recebidos pela plataforma.</p>
+
         <table>
             <thead>
                 <tr>
@@ -21,13 +35,22 @@
                         <td>{{ contato.nome }}</td>
                         <td>{{ contato.email }}</td>
                         <td>{{ contato.telefone }}</td>
-                        <td>{{ contato.mensagem }}</td>
-                        <td><a class="delete-button" href="{% url 'del_contato' contato.id %}">Excluir</a></td>
+                        <td>{{ contato.mensagem|linebreaksbr }}</td>
+                        <td>
+                            {% if perms.app.delete_contato %}
+                                <form method="post" action="{% url 'del_contato' contato.id %}" onsubmit="return confirm('Deseja realmente excluir este contato?');">
+                                    {% csrf_token %}
+                                    <button class="btn-excluir" type="submit">Excluir</button>
+                                </form>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% empty %}
-                    <tr><td colspan="5">Nenhum contato enviado.</td></tr>
+                    <tr><td colspan="5">Nenhum contato recebido.</td></tr>
                 {% endfor %}
             </tbody>
         </table>
-    </div>
+    </section>
+
+    <p class="link-voltar"><a href="{% url 'dashboard' %}">Voltar ao dashboard</a></p>
 {% endblock %}

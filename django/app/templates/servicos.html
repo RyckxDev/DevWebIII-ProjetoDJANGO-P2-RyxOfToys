@@ -1,105 +1,122 @@
 {% extends 'template.html' %}
 
-{% block titulo %} Serviços | Django {% endblock %}
+{% block titulo %}Serviços | Django{% endblock %}
 
-{% block conteudo %} 
-    <h2> Nossos Serviços </h2>
-
-    {% if tem_servicos %}
-        <p>{{ total_servicos }} serviço(s) encontrados</p>
-
-        {% if mais_barato %}
-        <p>Menor preço: R$ {{ mais_barato.preco }}</p>
+{% block conteudo %}
+    <section class="page-header page-header-acoes">
+        <div>
+            <span class="page-header-tag">Painel administrativo</span>
+            <h2>Gerenciamento de Serviços</h2>
+            <p>Gerencie, consulte e acompanhe seus serviços.</p>
+        </div>
+        {% if perms.app.add_servico %}
+            <a class="btn" href="{% url 'addServicos' %}">+ Novo Serviço</a>
         {% endif %}
+    </section>
 
-        {% if mais_caro %}
-        <p>Maior preço: R$ {{ mais_caro.preco }}</p>
-        {% endif %}
+    {# Estatísticas #}
+    <section class="stat-cards">
+        <div class="stat-card">
+            <small>Total de serviços</small>
+            <strong>{{ total_servicos }}</strong>
+        </div>
+        <div class="stat-card">
+            <small>Menor preço</small>
+            <strong>{% if menor_preco is not None %}R$ {{ menor_preco }}{% else %}-{% endif %}</strong>
+        </div>
+        <div class="stat-card">
+            <small>Maior preço</small>
+            <strong>{% if maior_preco is not None %}R$ {{ maior_preco }}{% else %}-{% endif %}</strong>
+        </div>
+        <div class="stat-card">
+            <small>Situação</small>
+            <strong>{{ servicos_ativos }} ativo(s) / {{ servicos_inativos }} inativo(s)</strong>
+        </div>
+    </section>
 
-    {% else %}
-        <p>Nenhum serviço encontrado.</p>
-    {% endif %}
+    {# Filtros: {% querystring %} mantém os outros filtros ao clicar em um novo #}
+    <section class="filtros">
+        <h3>Filtros e pesquisas</h3>
+        <p>Encontre rapidamente o serviço desejado.</p>
 
-    <p><a class="add-link" href="{% url 'addServicos' %}">Adicionar Serviço</a></p>
+        <form method="GET" class="filtro-busca">
+            {% if categoria %}<input type="hidden" name="categoria" value="{{ categoria }}">{% endif %}
+            {% if preco %}<input type="hidden" name="preco" value="{{ preco }}">{% endif %}
+            {% if ordem %}<input type="hidden" name="ordem" value="{{ ordem }}">{% endif %}
+            <input type="text" name="busca" placeholder="Pesquisar serviço pelo nome..." value="{{ busca }}">
+            <button class="btn" type="submit">Buscar</button>
+        </form>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Serviço</th>
-                <th>Descrição</th>
-                <th>Preço</th>
-                <th>Imagem</th>
-                <th colspan="2">Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for servico in servicos %}
-            <tr>
-                <td>{{ servico.nome }}</td>
-                <td>{{ servico.descricao }}</td>
-                <td>R$ {{ servico.preco }}</td>
-                <td>{% if servico.imagem %}<img src="media/{{ servico.imagem }}" width="120" alt="{{ servico.nome }}">{% endif %}</td>
-                <td><a class="action-link" href="{% url 'editServicos' servico.id %}">Editar</a></td>
-                <td><a class="delete-button" href="{% url 'delServicos' servico.id %}">Excluir</a></td>
-            </tr>
-        {% empty %}
-            <tr><td colspan="6">Nenhum serviço cadastrado.</td></tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <br>
+        <div class="filtro-grupo">
+            <h4>Filtrar por categoria</h4>
+            {% for categoria_item in categorias %}
+                <a class="filtro{% if categoria == categoria_item.id|stringformat:'s' %} filtro-ativo{% endif %}"
+                   href="{% querystring categoria=categoria_item.id %}">{{ categoria_item.nome }}</a>
+            {% empty %}
+                <span>Nenhuma categoria cadastrada.</span>
+            {% endfor %}
+        </div>
 
-    <h3>Buscar Serviço</h3>
+        <div class="filtro-grupo">
+            <h4>Filtrar por preço</h4>
+            <a class="filtro{% if preco == 'baixo' %} filtro-ativo{% endif %}" href="{% querystring preco='baixo' %}">Até R$ 500</a>
+            <a class="filtro{% if preco == 'medio' %} filtro-ativo{% endif %}" href="{% querystring preco='medio' %}">R$ 500 - R$ 1.500</a>
+            <a class="filtro{% if preco == 'alto' %} filtro-ativo{% endif %}" href="{% querystring preco='alto' %}">Acima de R$ 1.500</a>
+        </div>
 
-    <form method="GET">
-        <input type="text" name="busca"
-            placeholder="Digite o nome do serviço"
-            value="{{ busca|default:'' }}">
-        <button type="submit">Buscar</button>
-    </form>
-    <Br>
+        <div class="filtro-grupo">
+            <h4>Ordenar serviços</h4>
+            <a class="filtro{% if ordem == 'menor' %} filtro-ativo{% endif %}" href="{% querystring ordem='menor' %}">Menor preço</a>
+            <a class="filtro{% if ordem == 'maior' %} filtro-ativo{% endif %}" href="{% querystring ordem='maior' %}">Maior preço</a>
+            <a class="filtro{% if ordem == 'nome' %} filtro-ativo{% endif %}" href="{% querystring ordem='nome' %}">Nome</a>
+            <a class="filtro filtro-limpar" href="{% url 'servicos' %}">Limpar filtros</a>
+        </div>
+    </section>
 
-    <h3>Filtrar por categoria</h3>
+    {# Listagem #}
+    <section class="tabela-card">
+        <h3>Serviços cadastrados</h3>
+        <p>{{ servicos|length }} serviço(s) encontrado(s).</p>
 
-    {% for categoria_item in categorias %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Imagem</th>
+                    <th>Serviço</th>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Preço</th>
+                    <th>Situação</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for servico in servicos %}
+                <tr>
+                    <td>{% if servico.imagem %}<img class="tabela-imagem" src="{{ servico.imagem.url }}" alt="{{ servico.nome }}">{% endif %}</td>
+                    <td>{{ servico.nome }}</td>
+                    <td>{{ servico.descricao }}</td>
+                    <td>{{ servico.categoria.nome|default:"-" }}</td>
+                    <td>R$ {{ servico.preco }}</td>
+                    <td>{% if servico.ativo %}Ativo{% else %}Inativo{% endif %}</td>
+                    <td class="tabela-acoes">
+                        {% if perms.app.change_servico %}
+                            <a class="btn-editar" href="{% url 'editServicos' servico.id %}">Editar</a>
+                        {% endif %}
+                        {% if perms.app.delete_servico %}
+                            <form method="post" action="{% url 'delServicos' servico.id %}" onsubmit="return confirm('Deseja realmente excluir este serviço?');">
+                                {% csrf_token %}
+                                <button class="btn-excluir" type="submit">Excluir</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="7">Nenhum serviço encontrado.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
 
-        <a href="?categoria={{ categoria_item.id }}">
-            <button>
-                {{ categoria_item.nome }}
-            </button>
-        </a>
-        <br><br>
-    {% endfor %}
-    <br><Br>
-
-    <h3>Filtrar por preço</h3>
-
-    <a href="?preco=baixo">
-        <button>Menor preço</button>
-    </a>
-
-    <a href="?preco=medio">
-        <button>Maior preço</button>
-    </a>
-
-    <a href="?preco=alto">
-        <button>Nome</button>
-    </a>
-
-        <br><Br>
-
-    <h3>Ordernar</h3>
-
-    <a href="?ordem=menor">
-        <button>Menor preço</button>
-    </a>
-
-    <a href="?ordem=maior">
-        <button>Maior preço</button>
-    </a>
-
-    <a href="?ordem=nome">
-        <button>Nome</button>
-    </a>
-    
+    <p class="link-voltar"><a href="{% url 'dashboard' %}">Voltar ao dashboard</a></p>
 {% endblock %}

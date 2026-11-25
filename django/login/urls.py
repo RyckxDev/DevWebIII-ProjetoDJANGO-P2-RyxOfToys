@@ -10,8 +10,14 @@ urlpatterns = [
 
     path("perfil/", views.perfil, name="perfil"),
 
-    path("alterar-senha/", auth_views.PasswordChangeView.as_view(template_name="alterar_senha.html", success_url="/login/perfil/"), name="alterar_senha"),
-    
+    path("alterar-senha/", views.AlterarSenhaView.as_view(), name="alterar_senha"),
+
     path("cadastro/", views.cadastro, name='cadastro'),
-    
+
+    # Recuperação de senha: mecanismo nativo do Django (templates padrão do admin).
+    # Os nomes das rotas precisam ser exatamente estes, pois as views do Django os usam.
+    path("senha/recuperar/", auth_views.PasswordResetView.as_view(), name="password_reset"),
+    path("senha/recuperar/enviado/", auth_views.PasswordResetDoneView.as_view(), name="password_reset_done"),
+    path("senha/redefinir/<uidb64>/<token>/", auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
+    path("senha/redefinir/concluido/", auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
 ]

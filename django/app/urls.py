@@ -17,6 +17,7 @@ urlpatterns = [
 
     path("integrantes", views.integrantes, name="integrantes"),
     path("add-integrante", views.addIntegrante, name="addIntegrante"),
+    path("edit-integrante/<int:id_integrante>", views.editIntegrante, name="editIntegrante"),
     path("del-integrante/<int:id_integrante>", views.delIntegrante, name="delIntegrante"),
 
     path('categoria-api/', views.categoriasAPI, name='categoriasAPI'),

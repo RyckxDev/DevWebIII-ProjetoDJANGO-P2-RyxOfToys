@@ -1,16 +1,24 @@
 {% extends 'template.html' %}
 
-{% block titulo %} Criar Conta {% endblock %}
+{% block titulo %}Criar Conta | Django{% endblock %}
 
 {% block conteudo %}
-    <h2>Criar Conta</h2>
+    <section class="page-header">
+        <span class="page-header-tag">Novo usuário</span>
+        <h2>Crie sua conta</h2>
+        <p>Preencha seus dados para fazer parte da nossa plataforma.</p>
+    </section>
 
-    <form method="POST">
-        {% csrf_token %}
+    <section class="form-card">
+        <h3>Cadastrar-se</h3>
+        <p>Informe seus dados para criar seu acesso.</p>
 
-        {{form}}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn" type="submit">Criar minha conta</button>
+        </form>
 
-        <button type="submit">Cadastrar</button>
-    </form>
-
+        <p class="form-rodape">Já possui uma conta? <a href="{% url 'login' %}">Fazer login</a></p>
+    </section>
 {% endblock %}

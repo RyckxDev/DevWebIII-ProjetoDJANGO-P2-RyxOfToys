@@ -1,27 +1,60 @@
-{% if erro %}<p class="erro">{{ erro }}</p>{% endif %}
+{% extends 'template.html' %}
 
-<a href="{% url 'addIntegrante' %}"> Add Integrante</a>
+{% block titulo %}Equipe | Django{% endblock %}
 
-{% for integrante in integrantes %}
-    <p>
-        {% if integrante.foto_url %}
-            <img src="{{ integrante.foto_url }}" alt="Foto de {{ integrante.nome }}" width="80px">
-        {% endif %}
-    </p>
-    <p>
-        <b>
-        {{ integrante.nome }}<br>
-        {{ integrante.cargo }}
-        </b><br>
-        {{ integrante.biografia}}
-        <br>
-        
-        <form method="POST" action={% url 'delIntegrante' integrante.id %} onsubmit="return confirm('Deseja realmente excluir?');">
+{% block conteudo %}
+    <section class="page-header page-header-acoes">
+        <div>
+            <h2>Gerenciar Integrantes</h2>
+            <p>Cadastre, consulte, edite e exclua os integrantes.</p>
+        </div>
+        <a class="btn" href="{% url 'addIntegrante' %}">+ Novo Integrante</a>
+    </section>
 
-            {% csrf_token %}
-            <input type="submit" value="Excluir"><hr>
-        </form>
-    </p>
-    {% empty %}
-        <p>Nenhum integrante cadastrado.</p>
-{% endfor %}
+    {% if erro %}
+        <p class="erro">{{ erro }}</p>
+    {% endif %}
+
+    <section class="tabela-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Foto</th>
+                    <th>Nome</th>
+                    <th>Cargo</th>
+                    <th>Biografia</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for integrante in integrantes %}
+                    <tr>
+                        <td>{{ integrante.id }}</td>
+                        <td>
+                            {% if integrante.foto_url %}
+                                <img class="tabela-foto" src="{{ integrante.foto_url }}" alt="Foto de {{ integrante.nome }}">
+                            {% endif %}
+                        </td>
+                        <td>{{ integrante.nome }}</td>
+                        <td>{{ integrante.cargo }}</td>
+                        <td>{{ integrante.biografia }}</td>
+                        <td class="tabela-acoes">
+                            <a class="btn-editar" href="{% url 'editIntegrante' integrante.id %}">Editar</a>
+                            <form method="post" action="{% url 'delIntegrante' integrante.id %}" onsubmit="return confirm('Deseja realmente excluir este integrante?');">
+                                {% csrf_token %}
+                                <button class="btn-excluir" type="submit">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="6">Nenhum integrante cadastrado.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <p>Total de integrantes cadastrados: <strong>{{ integrantes|length }}</strong></p>
+    </section>
+
+    <p class="link-voltar"><a href="{% url 'dashboard' %}">Voltar ao dashboard</a></p>
+{% endblock %}
