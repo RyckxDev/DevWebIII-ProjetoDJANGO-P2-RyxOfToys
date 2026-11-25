@@ -93,7 +93,7 @@
             <tbody>
             {% for servico in servicos %}
                 <tr>
-                    <td>{% if servico.imagem %}<img class="tabela-imagem" src="{{ servico.imagem.url }}" alt="{{ servico.nome }}">{% endif %}</td>
+                    <td>{% if servico.imagem %}<img class="tabela-imagem" src="{{ servico.imagem.url }}" alt="{{ servico.nome }}">{% else %}<span class="tabela-imagem sem-imagem" aria-hidden="true">&#129528;</span>{% endif %}</td>
                     <td>{{ servico.nome }}</td>
                     <td>{{ servico.descricao }}</td>
                     <td>{{ servico.categoria.nome|default:"-" }}</td>

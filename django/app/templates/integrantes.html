@@ -34,6 +34,8 @@
                         <td>
                             {% if integrante.foto_url %}
                                 <img class="tabela-foto" src="{{ integrante.foto_url }}" alt="Foto de {{ integrante.nome }}">
+                            {% else %}
+                                <span class="tabela-foto avatar-mini" aria-hidden="true">{{ integrante.nome|first|upper }}</span>
                             {% endif %}
                         </td>
                         <td>{{ integrante.nome }}</td>

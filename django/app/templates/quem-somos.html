@@ -21,6 +21,11 @@
             <article class="team-card">
                 {% if integrante.foto_url %}
                     <img class="team-card-foto" src="{{ integrante.foto_url }}" alt="Foto de {{ integrante.nome }}">
+                {% else %}
+                    {# avatar padrão: bloquinho com a inicial do nome #}
+                    <div class="team-card-foto avatar-padrao" aria-hidden="true">
+                        <span class="avatar-bloco">{{ integrante.nome|first|upper }}</span>
+                    </div>
                 {% endif %}
                 <div class="team-card-info">
                     <h3>{{ integrante.nome }}</h3>

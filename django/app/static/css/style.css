@@ -1236,3 +1236,70 @@ tbody tr:hover{
     background: var(--branco);
     box-shadow: inset 0 -4px 0 var(--cor);
 }
+
+/* =====================================================================
+   Imagens padrão (integrante sem foto, produto sem imagem)
+   ===================================================================== */
+
+/* fundo da área da foto com pontinhos, como uma placa de montar */
+.avatar-padrao{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--cor);
+    background-image: radial-gradient(circle, rgba(255, 255, 255, .28) 3px, transparent 3.5px);
+    background-size: 26px 26px;
+}
+
+/* bloco branco com a inicial e dois pininhos quadrados em cima */
+.avatar-bloco{
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 110px;
+    height: 96px;
+    margin-top: 14px;
+    font-family: var(--fonte-titulo);
+    font-size: 3.4rem;
+    font-weight: 700;
+    color: var(--tinta);
+    background: var(--branco);
+    border: var(--borda);
+    border-radius: 14px;
+    box-shadow: var(--sombra);
+}
+.avatar-bloco::before,
+.avatar-bloco::after{
+    content: "";
+    position: absolute;
+    top: -17px;
+    width: 26px;
+    height: 14px;
+    background: var(--branco);
+    border: var(--borda);
+    border-bottom: none;
+}
+.avatar-bloco::before{ left: 18px; }
+.avatar-bloco::after{ right: 18px; }
+
+/* versão pequena na tabela da Equipe */
+.avatar-mini{
+    display: grid;
+    place-items: center;
+    font-family: var(--fonte-titulo);
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--tinta);
+    background: var(--amarelo);
+}
+
+/* ursinho no lugar da imagem do produto */
+.sem-imagem{
+    display: grid;
+    place-items: center;
+    font-size: 1.7rem;
+    background: var(--creme);
+}
+.pedido-imagem.sem-imagem{
+    font-size: 2.2rem;
+}

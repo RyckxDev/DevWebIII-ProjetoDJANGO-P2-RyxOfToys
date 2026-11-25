@@ -14,6 +14,8 @@
             <article class="pedido">
                 {% if pedido.servico.imagem %}
                     <img class="pedido-imagem" src="{{ pedido.servico.imagem.url }}" alt="{{ pedido.nome_servico }}">
+                {% else %}
+                    <span class="pedido-imagem sem-imagem" aria-hidden="true">&#129528;</span>
                 {% endif %}
                 <div class="pedido-info">
                     <h3>{{ pedido.nome_servico }}</h3>
