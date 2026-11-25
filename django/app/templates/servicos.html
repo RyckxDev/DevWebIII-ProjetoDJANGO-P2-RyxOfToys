@@ -1,0 +1,105 @@
+{% extends 'template.html' %}
+
+{% block titulo %} Serviços | Django {% endblock %}
+
+{% block conteudo %} 
+    <h2> Nossos Serviços </h2>
+
+    {% if tem_servicos %}
+        <p>{{ total_servicos }} serviço(s) encontrados</p>
+
+        {% if mais_barato %}
+        <p>Menor preço: R$ {{ mais_barato.preco }}</p>
+        {% endif %}
+
+        {% if mais_caro %}
+        <p>Maior preço: R$ {{ mais_caro.preco }}</p>
+        {% endif %}
+
+    {% else %}
+        <p>Nenhum serviço encontrado.</p>
+    {% endif %}
+
+    <p><a class="add-link" href="{% url 'addServicos' %}">Adicionar Serviço</a></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Serviço</th>
+                <th>Descrição</th>
+                <th>Preço</th>
+                <th>Imagem</th>
+                <th colspan="2">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for servico in servicos %}
+            <tr>
+                <td>{{ servico.nome }}</td>
+                <td>{{ servico.descricao }}</td>
+                <td>R$ {{ servico.preco }}</td>
+                <td>{% if servico.imagem %}<img src="media/{{ servico.imagem }}" width="120" alt="{{ servico.nome }}">{% endif %}</td>
+                <td><a class="action-link" href="{% url 'editServicos' servico.id %}">Editar</a></td>
+                <td><a class="delete-button" href="{% url 'delServicos' servico.id %}">Excluir</a></td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="6">Nenhum serviço cadastrado.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+
+    <h3>Buscar Serviço</h3>
+
+    <form method="GET">
+        <input type="text" name="busca"
+            placeholder="Digite o nome do serviço"
+            value="{{ busca|default:'' }}">
+        <button type="submit">Buscar</button>
+    </form>
+    <Br>
+
+    <h3>Filtrar por categoria</h3>
+
+    {% for categoria_item in categorias %}
+
+        <a href="?categoria={{ categoria_item.id }}">
+            <button>
+                {{ categoria_item.nome }}
+            </button>
+        </a>
+        <br><br>
+    {% endfor %}
+    <br><Br>
+
+    <h3>Filtrar por preço</h3>
+
+    <a href="?preco=baixo">
+        <button>Menor preço</button>
+    </a>
+
+    <a href="?preco=medio">
+        <button>Maior preço</button>
+    </a>
+
+    <a href="?preco=alto">
+        <button>Nome</button>
+    </a>
+
+        <br><Br>
+
+    <h3>Ordernar</h3>
+
+    <a href="?ordem=menor">
+        <button>Menor preço</button>
+    </a>
+
+    <a href="?ordem=maior">
+        <button>Maior preço</button>
+    </a>
+
+    <a href="?ordem=nome">
+        <button>Nome</button>
+    </a>
+    
+{% endblock %}

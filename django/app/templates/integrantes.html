@@ -1,0 +1,27 @@
+{% if erro %}<p class="erro">{{ erro }}</p>{% endif %}
+
+<a href="{% url 'addIntegrante' %}"> Add Integrante</a>
+
+{% for integrante in integrantes %}
+    <p>
+        {% if integrante.foto_url %}
+            <img src="{{ integrante.foto_url }}" alt="Foto de {{ integrante.nome }}" width="80px">
+        {% endif %}
+    </p>
+    <p>
+        <b>
+        {{ integrante.nome }}<br>
+        {{ integrante.cargo }}
+        </b><br>
+        {{ integrante.biografia}}
+        <br>
+        
+        <form method="POST" action={% url 'delIntegrante' integrante.id %} onsubmit="return confirm('Deseja realmente excluir?');">
+
+            {% csrf_token %}
+            <input type="submit" value="Excluir"><hr>
+        </form>
+    </p>
+    {% empty %}
+        <p>Nenhum integrante cadastrado.</p>
+{% endfor %}

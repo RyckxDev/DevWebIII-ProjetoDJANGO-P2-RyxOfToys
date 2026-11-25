@@ -1,0 +1,16 @@
+{% extends 'template.html' %}
+
+{% block titulo %} Criar Conta {% endblock %}
+
+{% block conteudo %}
+    <h2>Criar Conta</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        {{form}}
+
+        <button type="submit">Cadastrar</button>
+    </form>
+
+{% endblock %}

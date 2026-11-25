@@ -1,0 +1,21 @@
+{% extends 'template.html' %}
+
+{% block titulo %} Login {% endblock %}
+
+{% block conteudo %}
+    <h2>Login</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Entrar">
+    </form>
+
+    <br>
+    
+    <p>Ainda não tem uma conta?</p>
+    <a href="{% url 'cadastro' %}">
+        <button type="button">Cadastrar Usuário</button>
+    </a>
+
+{% endblock %}

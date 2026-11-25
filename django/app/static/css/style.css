@@ -1,0 +1,131 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+h1{
+    color: green;
+}
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: black;
+}
+a{
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+}
+a:hover{
+    color: green;
+}
+body{
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    color: #292929;
+}
+main{
+    padding: 26px 20px;
+}
+h2{
+    text-align: center;
+    margin-bottom: 18px;
+}
+.service-cards{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 260px));
+    justify-content: center;
+    gap: 24px;
+}
+.service-card{
+    overflow: hidden;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px #0002;
+    padding-bottom: 16px;
+}
+.service-card img{
+    display: block;
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+}
+.service-card h3,
+.service-card p,
+.service-card strong{
+    display: block;
+    margin: 10px 14px 0;
+}
+.service-card h3{
+    color: green;
+}
+.contact-form{
+    width: 440px;
+    max-width: calc(100% - 40px);
+    margin: 22px auto;
+    padding: 28px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px #0002;
+}
+.contact-form p{
+    margin: 0 0 8px;
+}
+.contact-form label{
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.contact-form input,
+.contact-form textarea{
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    padding: 9px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font: inherit;
+}
+.contact-form textarea{
+    resize: vertical;
+}
+.contact-form button{
+    width: 100%;
+    padding: 10px;
+    border: 0;
+    border-radius: 4px;
+    background: green;
+    color: white;
+    font-size: 16px;
+}
+.table-wrapper{
+    max-width: 1025px;
+    margin: 22px auto;
+    overflow-x: auto;
+}
+table{
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 3px 10px #0002;
+}
+.add-link,
+.action-link{
+    color: green;
+}
+th, td{
+    padding: 12px 14px;
+    text-align: left;
+}
+th{
+    background: black;
+    color: white;
+}
+.delete-button{
+    display: inline-block;
+    padding: 7px 10px;
+    background: #f44336;
+    border-radius: 4px;
+}
