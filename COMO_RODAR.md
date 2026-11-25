@@ -10,7 +10,7 @@ Passo a passo para rodar o projeto em qualquer PC (em casa ou na faculdade).
 ## 1. Pegar o projeto
 
 ```powershell
-git clone <url-do-repositorio>
+git clone https://github.com/RyckxDev/DevWebIII-ProjetoDJANGO-P2-RyxOfToys.git
 cd DevWebIII-ProjetoP2\django
 ```
 
